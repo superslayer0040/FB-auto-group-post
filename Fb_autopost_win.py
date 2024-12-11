@@ -98,15 +98,14 @@ edge_driver_path = r'C:\Users\Wan\Documents\FB_autopost_image\edgedriver_win64\m
 
 # Initialize the WebDriver with the Edge driver
 service = EdgeService(executable_path=edge_driver_path)
+driver = webdriver.Edge(service=service, options=EdgeOptions)
+
 edge_options = EdgeOptions()
 edge_options.use_chromium = True  # Ensure EdgeDriver uses the Chromium version of Edge
 
 edge_options.add_argument("no-sandbox")
 edge_options.add_argument("disable-dev-shm-usage")
-driver = webdriver.Edge(service=service, options=edge_options)
 
-service = EdgeService(executable_path=edge_driver_path)
-driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()), options=edge_options)
 user_data_dir = r'C:\Users\Wan\Documents\FB_autopost_image'
 if not os.path.exists(user_data_dir):
     os.makedirs(user_data_dir)
@@ -130,12 +129,8 @@ for url in group_urls:
     
     # Use explicit wait to find the post box with alternative methods
     try:
-    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//div[@aria-label='Write a post']")))
-except TimeoutException as e: logging.error(f"Unable to find the post box for group {url}: {str(e)}. Skipping this group.")
-    try:
-        post_box = WebDriverWait(driver, 20).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "div[class='xi81zsa x1lkfr7t xkjl1po x1mzt3pk xh8yej3 x13faqbe'] span[class='x1lliihq x6ikm8r x10wlt62 x1n2onr6']"))
-        )
+        WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//div[@aria-label='Write a post']")))
+        
     except TimeoutException as e:
         logging.error(f"Timeout while waiting for the post area: {str(e)}")
         try:
