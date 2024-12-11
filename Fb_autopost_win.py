@@ -16,8 +16,8 @@ driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install(
 
 
 # Facebook credentials
-fb_username = '0136232353'
-fb_password = '231132114564589aA..'
+fb_username = 'FB_USERNAME'
+fb_password = 'FB_PASSWORD'
 
 
 # Local directory to save downloaded images
