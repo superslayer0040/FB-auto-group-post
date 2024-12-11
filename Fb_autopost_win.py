@@ -106,7 +106,7 @@ edge_options.add_argument("disable-dev-shm-usage")
 driver = webdriver.Edge(service=service, options=edge_options)
 
 service = EdgeService(executable_path=edge_driver_path)
-driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
+driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()), options=edge_options)
 user_data_dir = r'C:\Users\Wan\Documents\FB_autopost_image'
 if not os.path.exists(user_data_dir):
     os.makedirs(user_data_dir)
