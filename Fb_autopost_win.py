@@ -15,9 +15,9 @@ from webdriver_manager.microsoft import EdgeChromiumDriverManager
 driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
 
 
-# Facebook credentials
-fb_username = '0136232353'
-fb_password = '231132114564589aA..'
+
+fb_username = os.getenv('FB_USERNAME')
+fb_password = os.getenv('FB_PASSWORD')
 
 
 # Local directory to save downloaded images
