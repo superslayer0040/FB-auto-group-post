@@ -122,10 +122,6 @@ password_box.send_keys(fb_password)
 password_box.send_keys(Keys.RETURN)
 
 # Wait for login to complete and page to load
-try:
-    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//div[@aria-label='Write a post']")))
-except TimeoutException:
-    print("Timeout while waiting for the post area. Trying another selector.")
 
 # Post to each group
 for url in group_urls:
@@ -134,17 +130,20 @@ for url in group_urls:
     
     # Use explicit wait to find the post box with alternative methods
     try:
+    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//div[@aria-label='Write a post']")))
+except TimeoutException as e: logging.error(f"Unable to find the post box for group {url}: {str(e)}. Skipping this group.")
+    try:
         post_box = WebDriverWait(driver, 20).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "div[class='xi81zsa x1lkfr7t xkjl1po x1mzt3pk xh8yej3 x13faqbe'] span[class='x1lliihq x6ikm8r x10wlt62 x1n2onr6']"))
         )
-    except TimeoutException:
-        print("Timeout while waiting for the post box using CSS Selector. Trying another selector.")
+    except TimeoutException as e:
+        logging.error(f"Timeout while waiting for the post area: {str(e)}")
         try:
             post_box = WebDriverWait(driver, 20).until(
                 EC.presence_of_element_located((By.XPATH, "//textarea[contains(@aria-label, 'Write something')]"))
             )
-        except TimeoutException:
-            print("Unable to find the post box. Skipping this group.")
+        except TimeoutException as e:
+            logging.error(f"Unable to find the post box for group {url}: {str(e)}. Skipping this group.")
             continue
 
     post_box.send_keys(daily_copywriting)
