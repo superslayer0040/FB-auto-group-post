@@ -84,13 +84,13 @@ edge_driver_path = r'C:\Users\Wan\Documents\FB_autopost_image\edgedriver_win64\m
 
 # Initialize the WebDriver with the Edge driver
 service = EdgeService(executable_path=edge_driver_path)
+driver = webdriver.Edge(service=service, options=EdgeOptions)
+
 edge_options = EdgeOptions()
 edge_options.use_chromium = True  # Ensure EdgeDriver uses the Chromium version of Edge
 edge_options.add_argument(f"user-data-dir={user_data_dir}")
 edge_options.add_argument("no-sandbox")
 edge_options.add_argument("disable-dev-shm-usage")
-driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
-
 
 driver.get('https://www.facebook.com')
 
@@ -123,13 +123,7 @@ for url in group_urls:
     driver.get(url)
     time.sleep(5)
     
-    try:
-        post_box = WebDriverWait(driver, 20).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "div[class='xi81zsa x1lkfr7t xkjl1po x1mzt3pk xh8yej3 x13faqbe'] span[class='x1lliihq x6ikm8r x10wlt62 x1n2onr6']"))
-        )
-        driver.execute_script("arguments[0].value = arguments[1];", post_box, daily_copywriting)
-    except TimeoutException:
-        print("Timeout while waiting for the post box using CSS Selector. Trying another selector.")
+
         try:
             post_box = WebDriverWait(driver, 20).until(
                 EC.presence_of_element_located((By.XPATH, "//textarea[contains(@aria-label, 'Write something')]"))
